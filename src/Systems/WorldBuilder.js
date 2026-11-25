@@ -181,6 +181,13 @@ export function buildWorld(scene, factory) {
       }
     }
     bakeGroup(puffs);
+    // bakeGroup folds emissive into vertex colour, so lift the cloud shading here
+    puffs.traverse((o) => {
+      if (o.isMesh && o.material) {
+        o.material.emissive = new THREE.Color('#eef9ff');
+        o.material.emissiveIntensity = 0.62;
+      }
+    });
     clouds.add(puffs);
     scene.add(clouds);
   }
