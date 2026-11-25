@@ -177,8 +177,12 @@ class Game {
     this.camYaw = 0.5;
     this.camPitch = 0.3;
     this.camDist = 68;
-    this.lookTarget = new THREE.Vector3(0, 5, 0);
-    this.camera.position.set(0, 36, 52);
+    this.lookTarget = new THREE.Vector3(0, 5, -2);
+    this.camera.position.set(
+      Math.sin(this.camYaw) * Math.cos(this.camPitch) * this.camDist,
+      5 + Math.sin(this.camPitch) * this.camDist,
+      Math.cos(this.camYaw) * Math.cos(this.camPitch) * this.camDist,
+    );
     this.camera.lookAt(this.lookTarget);
 
     this.factory = createCreatureFactory();
