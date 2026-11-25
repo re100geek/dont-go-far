@@ -763,7 +763,6 @@ export function buildWorld(scene, factory) {
   // 24 tiles
   const tileGeo = new THREE.BoxGeometry(3.72, 0.46, 3.72);
   const tileSideMat = new THREE.MeshLambertMaterial({ color: '#1e1836' });
-  const tileBottomMat = new THREE.MeshLambertMaterial({ color: '#120e22' });
   const tiles = [];
   const half = (BOARD_SIDE - 1) / 2;
   const step = CONFIG.board.tileSize;
