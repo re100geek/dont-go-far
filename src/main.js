@@ -169,12 +169,14 @@ class Game {
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     this.renderer.setSize(window.innerWidth, window.innerHeight, false);
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFShadowMap;
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(58, window.innerWidth / window.innerHeight, 0.1, 900);
-    this.camYaw = 0;
-    this.camPitch = 0.62;
-    this.camDist = 70;
+    this.camYaw = 0.5;
+    this.camPitch = 0.3;
+    this.camDist = 68;
     this.lookTarget = new THREE.Vector3(0, 5, 0);
     this.camera.position.set(0, 36, 52);
     this.camera.lookAt(this.lookTarget);
@@ -316,9 +318,13 @@ class Game {
 
     if (this.mode === 'board') {
       const c = CONFIG.board.center;
-      desired.set(c.x, 58, c.z + 30);
-      look.set(c.x, 0.5, c.z + 4);
-      this.lookTarget.lerp(look, 1 - Math.exp(-7 * dt));
+      const p = this.board.token?.position || new THREE.Vector3(c.x, 0, c.z);
+      const follow = c.x + (p.x - c.x) * 0.02;
+      const depth = c.z + (p.z - c.z) * 0.04;
+      const wide = this.camera.aspect > 1.15;
+      desired.set(follow, wide ? 38 : 57, depth + (wide ? 25 : 39));
+      look.set(follow, wide ? -3 : 2, depth + 2);
+      this.lookTarget.lerp(look, 1 - Math.exp(-9 * dt));
     } else if (this.mode === 'field' || this.mode === 'flight') {
       const p = this.cannon.flying && this.flightMesh ? this.flightMesh.position : this.player.position;
       const yaw = this.camYaw;
@@ -347,9 +353,19 @@ class Game {
       this.lookTarget.lerp(look, 1 - Math.exp(-6 * dt));
     }
 
+    if (this.snapCamera) {
+      this.snapCamera = false;
+      this.camera.position.copy(desired);
+      this.lookTarget.copy(look);
+    }
     const k = 1 - Math.exp(-6 * dt);
     this.camera.position.lerp(desired, k);
     this.camera.lookAt(this.lookTarget);
+
+    if (this.world.updateSun) {
+      const focus = this.mode === 'board' ? this.board.token.position : this.lookTarget;
+      this.world.updateSun(focus, performance.now() / 1000);
+    }
   }
 
   // ---------------- yard visuals ----------------
@@ -744,6 +760,7 @@ class Game {
   enterBoard() {
     if (this.mode !== 'base') return;
     this.mode = 'board';
+    this.snapCamera = true;
     this.ui.setMode('board');
     this.updateBoardInfo();
   }

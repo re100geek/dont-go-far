@@ -262,12 +262,14 @@ export class UIManager {
     layer.appendChild(modal);
     layer.classList.remove('hidden');
     this._modalOpen = true;
+    document.getElementById('app')?.classList.add('ui-blocked');
   }
 
   hideModal() {
     this.el.modalLayer.classList.add('hidden');
     this.el.modalLayer.innerHTML = '';
     this._modalOpen = false;
+    if (!this.sheetOpen) document.getElementById('app')?.classList.remove('ui-blocked');
   }
 
   get modalOpen() {
@@ -282,11 +284,13 @@ export class UIManager {
     }
     this.el.sheetTitle.textContent = tab === 'dex' ? '도감' : tab === 'pets' ? '펫' : '보유 크리처';
     this.el.sheet.classList.remove('hidden');
+    document.getElementById('app')?.classList.add('ui-blocked');
     this.renderSheet();
   }
 
   closeSheet() {
     this.el.sheet.classList.add('hidden');
+    if (!this.modalOpen) document.getElementById('app')?.classList.remove('ui-blocked');
   }
 
   get sheetOpen() {

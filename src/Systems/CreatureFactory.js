@@ -83,6 +83,12 @@ class CreatureFactory {
     group.userData.headY = 1.2;
     // one draw call per creature: bake every coloured part into a single mesh
     bakeGroup(group);
+    group.traverse((o) => {
+      if (o.isMesh) {
+        o.castShadow = true;
+        o.receiveShadow = false;
+      }
+    });
     const s = species.scale || 1;
     group.scale.setScalar(s);
     return group;
@@ -105,6 +111,10 @@ class CreatureFactory {
     group.add(this.box(dark, [0, 0.74, 1.06], [0.16, 0.1, 0.06]));
     this.eyes(ctx, 1.02, 0.94, 0.16, 0.09);
 
+    // studded back plate (Roblox plate detail)
+    for (const sx of [-0.22, 0.22]) {
+      group.add(this.part(G.cyl, body, { pos: [sx, 1.16, -0.3], size: [0.26, 0.16, 0.26] }));
+    }
     // legs
     for (const sx of [-1, 1]) {
       for (const sz of [-1, 1]) {
