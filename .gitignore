@@ -1,0 +1,10 @@
+# 로컬 검증용 스크린샷 (배포 사이트에는 불필요)
+screenshots/
+
+# OS/에디터 잡파일
+.DS_Store
+Thumbs.db
+*.log
+.env
+.env.*
+node_modules/

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no" />
+<meta name="theme-color" content="#8fd4ff" />
+<title>Don't go far!</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23ffc24a'/%3E%3Ccircle cx='16' cy='18' r='7' fill='%232a3350'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="styles/main.css" />
+</head>
+<body>
+<div id="app">
+  <canvas id="scene"></canvas>
+
+  <header class="hud-top">
+    <div class="hud-pill">
+      <span class="icon">◍</span>
+      <span id="gp-value">0</span>
+      <span class="rate" id="gp-rate">+0.0/s</span>
+    </div>
+    <div class="hud-actions">
+      <button class="icon-btn" id="btn-help">?</button>
+      <button class="icon-btn" id="btn-collection">도감</button>
+      <button class="icon-btn" id="btn-pets">펫</button>
+    </div>
+  </header>
+
+  <div class="zone-chip hidden" id="zone-chip">
+    <span id="zone-name">초원</span>
+    <span id="zone-dist">0m</span>
+    <span class="risk" id="zone-risk">안전</span>
+  </div>
+
+  <div class="mode-panel" id="base-panel">
+    <div class="row">
+      <button class="big-btn primary" id="btn-launch-creature">캐릭터 발사<small>자동 테이밍</small></button>
+      <button class="big-btn secondary" id="btn-launch-self">본인 발사<small>직접 탐험</small></button>
+    </div>
+    <button class="big-btn board" id="btn-board">보드게임 <small>주사위 · 펫 뽑기</small></button>
+  </div>
+
+  <div class="hint" id="hint">화면을 드래그해 기지를 둘러보세요</div>
+
+  <!-- aim -->
+  <div class="aim-panel hidden" id="aim-panel">
+    <div class="aim-head">
+      <span id="aim-title">캐릭터 발사</span>
+      <span class="sub" id="aim-sub">화약을 넣고 초록 구간에 맞춰 발사!</span>
+    </div>
+    <div class="aim-card">
+      <div class="load-row" id="load-row"></div>
+      <div class="slider-row">
+        <span class="lbl">화약</span>
+        <input class="gp-slider" id="gp-slider" type="range" min="5" max="60" step="5" value="20" />
+        <span class="gp-value" id="gp-value-label">20</span>
+      </div>
+      <div class="gauge-wrap">
+        <div class="gauge">
+          <div class="gauge-zone" id="gauge-zone"></div>
+          <div class="gauge-marker" id="gauge-marker"></div>
+        </div>
+        <div class="gauge-hint" id="gauge-hint">예상 비거리 94m · 초록 구간에서 멈추면 최대 파워</div>
+      </div>
+      <div class="aim-actions">
+        <button class="big-btn ghost" id="btn-aim-cancel">취소</button>
+        <button class="big-btn red fire" id="btn-fire">발사!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- field -->
+  <div class="field-controls hidden" id="field-controls">
+    <div class="joystick" id="joystick"><div class="knob" id="joystick-knob"></div></div>
+    <div class="field-bars">
+      <div class="bar hp"><span id="hp-fill"></span><span class="label" id="hp-label">HP 100</span></div>
+      <div class="bar danger"><span id="danger-fill"></span><span class="label" id="danger-label">위험도 0%</span></div>
+    </div>
+    <div class="field-actions">
+      <button class="tame-btn" id="btn-tame">테이밍<small id="tame-sub">주변 탐색</small></button>
+      <button class="return-btn" id="btn-return">귀환 · 5</button>
+    </div>
+  </div>
+
+  <!-- board -->
+  <div class="board-panel hidden" id="board-panel">
+    <div class="board-info" id="board-info">주사위를 굴려 펫 알과 화약을 노려보세요!</div>
+    <div class="board-actions">
+      <button class="big-btn green dice" id="btn-dice">주사위 굴리기</button>
+      <button class="big-btn ghost leave" id="btn-board-leave">나가기</button>
+    </div>
+  </div>
+
+  <div class="dice-popup" id="dice-popup">1</div>
+
+  <div class="sheet hidden" id="sheet">
+    <div class="sheet-head">
+      <h2 id="sheet-title">보유 크리처</h2>
+      <button class="close" id="sheet-close">✕</button>
+    </div>
+    <nav class="tabs" id="sheet-tabs">
+      <button data-tab="cards" class="active">크리처</button>
+      <button data-tab="dex">도감</button>
+      <button data-tab="pets">펫</button>
+    </nav>
+    <div class="sheet-body" id="sheet-body"></div>
+  </div>
+
+  <div class="toast-layer" id="toast-layer"></div>
+  <div class="modal-layer hidden" id="modal-layer"></div>
+
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <div>Don't go far! 준비 중…</div>
+  </div>
+</div>
+
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
