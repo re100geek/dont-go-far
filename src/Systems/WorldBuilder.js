@@ -163,7 +163,7 @@ export function buildWorld(scene, factory) {
       seed = (seed * 1664525 + 1013904223) % 4294967296;
       return seed / 4294967296;
     };
-    const white = new THREE.MeshLambertMaterial({ color: '#ffffff', emissive: '#e8f6ff', emissiveIntensity: 0.55, flatShading: true });
+    const white = new THREE.MeshLambertMaterial({ color: '#ffffff', emissive: '#f2fbff', emissiveIntensity: 0.85, flatShading: true });
     const puffGeo = new THREE.BoxGeometry(1, 1, 1);
     for (let i = 0; i < 16; i++) {
       const a = rnd() * Math.PI * 2;

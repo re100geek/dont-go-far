@@ -113,10 +113,10 @@ export function createBoardToken(yellow = '#ffd21f', cyan = '#2ee6ff') {
   group.add(ring2);
 
   const beam = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.36, 0.72, 22, 14, 1, true),
-    glowMat(cyan, 0.1),
+    new THREE.CylinderGeometry(0.3, 0.62, 9, 12, 1, true),
+    glowMat(cyan, 0.09),
   );
-  beam.position.y = 11.2;
+  beam.position.y = 5.2;
   group.add(beam);
 
   const disc = new THREE.Mesh(new THREE.CircleGeometry(2.1, 28), glowMat(cyan, 0.14));
